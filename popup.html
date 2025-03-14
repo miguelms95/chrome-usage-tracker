@@ -3,18 +3,26 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Chrome Usage Tracker</title>
+	<title>⏱️ Chrome Usage Heatmap</title>
 	<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div class="container">
-	<h1>Weekly Chrome Usage Heatmap</h1>
+	<h1>⏱️ Chrome Usage Heatmap</h1>
 	<div class="navigation">
 		<button id="prev-week">Previous Week</button>
 		<span id="week-label"></span>
 		<button id="next-week">Next Week</button>
 	</div>
+	<div class="interval-selector">
+		<label for="interval-select">Time Interval:</label>
+		<select id="interval-select">
+			<option value="hourly" selected>Hourly</option>
+			<option value="15min">15 Minutes</option>
+		</select>
+	</div>
 	<div id="calendar" class="heatmap"></div>
+	<p class="footer">Developed by <a href="https://miguelms.es/" target="_blank">miguelms.es</a></p>
 </div>
 <script src="popup.js"></script>
 </body>

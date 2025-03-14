@@ -53,6 +53,25 @@ h1 {
   color: #555;
 }
 
+/* Interval Selector */
+.interval-selector {
+  margin-bottom: 20px;
+}
+
+.interval-selector label {
+  font-size: 14px;
+  color: #333;
+  margin-right: 10px;
+}
+
+.interval-selector select {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 /* Heatmap */
 .heatmap {
   background-color: white;
@@ -81,7 +100,7 @@ th {
 td:first-child {
   text-align: left;
   color: #666;
-  width: 80px; /* Fixed width for time column */
+  width: 80px;
 }
 
 /* Heatmap colors */
@@ -103,3 +122,7 @@ td.bg-blue-600 { background-color: #0284c7; }
 td.bg-blue-700 { background-color: #0369a1; }
 td.bg-blue-800 { background-color: #075985; }
 td.bg-blue-900 { background-color: #0c4a6e; }
+
+.footer{
+  margin-top: 2em;
+}
