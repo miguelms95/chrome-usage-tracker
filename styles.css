@@ -1,0 +1,105 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 800px;
+  font-family: 'Arial', sans-serif;
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+/* Container */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Navigation */
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.navigation button {
+  padding: 10px 20px;
+  background-color: #405797;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.navigation button:hover {
+  background-color: #3b4a73;
+}
+
+#week-label {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Heatmap */
+.heatmap {
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #e5e7eb;
+  color: #374151;
+  font-weight: bold;
+}
+
+td:first-child {
+  text-align: left;
+  color: #666;
+  width: 80px; /* Fixed width for time column */
+}
+
+/* Heatmap colors */
+td {
+  width: 50px;
+  height: 20px;
+}
+
+td.bg-gray-50 {
+  background-color: #f5f5f5;
+}
+
+td.bg-blue-100 { background-color: #e0f2fe; }
+td.bg-blue-200 { background-color: #bae6fd; }
+td.bg-blue-300 { background-color: #7dd3fc; }
+td.bg-blue-400 { background-color: #38bdf8; }
+td.bg-blue-500 { background-color: #0ea5e9; }
+td.bg-blue-600 { background-color: #0284c7; }
+td.bg-blue-700 { background-color: #0369a1; }
+td.bg-blue-800 { background-color: #075985; }
+td.bg-blue-900 { background-color: #0c4a6e; }

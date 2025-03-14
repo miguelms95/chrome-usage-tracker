@@ -2,12 +2,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const prevWeekBtn = document.getElementById("prev-week");
     const nextWeekBtn = document.getElementById("next-week");
     const weekLabel = document.getElementById("week-label");
-    let weekOffset = 0; // 0 = current week, -1 = last week, etc.
+    let weekOffset = 0;
 
     function updateWeek() {
         const today = new Date();
         const startOfWeek = new Date(today);
-        startOfWeek.setDate(today.getDate() - today.getDay() + 1 + weekOffset * 7); // Monday start
+        startOfWeek.setDate(today.getDate() - today.getDay() + 1 + weekOffset * 7);
         const endOfWeek = new Date(startOfWeek);
         endOfWeek.setDate(startOfWeek.getDate() + 6);
 
@@ -24,20 +24,23 @@ document.addEventListener("DOMContentLoaded", () => {
         updateWeek();
     });
 
-    // Initial load
     updateWeek();
 });
 
 function fetchHistory(startDate, endDate) {
-    chrome.runtime.sendMessage({ action: "getHistory" }, (response) => {
-        const history = response.history.filter((item) => {
-            const visitTime = new Date(item.lastVisitTime);
-            return visitTime >= startDate && visitTime <= endDate;
-        });
-        const weeklyData = processHistory(history, startDate);
-        renderHeatmap(weeklyData);
-        analyzeWorkHours(weeklyData);
-    });
+    chrome.history.search(
+        {
+            text: "",
+            startTime: startDate.getTime(),
+            endTime: endDate.getTime(),
+            maxResults: 10000
+        },
+        (historyItems) => {
+            const weeklyData = processHistory(historyItems, startDate);
+            renderHeatmap(weeklyData);
+            analyzeActivityHours(weeklyData);
+        }
+    );
 }
 
 function processHistory(history, startDate) {
@@ -47,9 +50,9 @@ function processHistory(history, startDate) {
     history.forEach((item) => {
         const visitTime = new Date(item.lastVisitTime);
         const daysSinceStart = Math.floor((visitTime - startDate) / (1000 * 60 * 60 * 24));
-        const day = days[daysSinceStart] || "Unknown"; // Handle edge cases
+        const day = days[daysSinceStart] || "Unknown";
         const minutes = visitTime.getHours() * 60 + visitTime.getMinutes();
-        const interval = Math.floor(minutes / 15); // 0 to 95 (15-min intervals)
+        const interval = Math.floor(minutes / 15);
 
         if (!weeklyData[day]) weeklyData[day] = {};
         weeklyData[day][interval] = (weeklyData[day][interval] || 0) + 1;
@@ -62,23 +65,22 @@ function renderHeatmap(data) {
     const calendarDiv = document.getElementById("calendar");
     let html = `
     <div class="overflow-x-auto">
-      <table class="min-w-full border-collapse">
+      <table>
         <thead>
-          <tr class="bg-gray-200 text-gray-700">
-            <th class="p-2 text-left">Time</th>
-            <th class="p-2">Mon</th>
-            <th class="p-2">Tue</th>
-            <th class="p-2">Wed</th>
-            <th class="p-2">Thu</th>
-            <th class="p-2">Fri</th>
-            <th class="p-2">Sat</th>
-            <th class="p-2">Sun</th>
+          <tr>
+            <th>Time</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+            <th>Sun</th>
           </tr>
         </thead>
         <tbody>
   `;
 
-    // Find max visits for scaling
     let maxVisits = 0;
     const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     days.forEach((day) => {
@@ -92,12 +94,12 @@ function renderHeatmap(data) {
         const minute = (interval % 4) * 15;
         const timeLabel = `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
 
-        html += `<tr class="border-t"><td class="p-2 text-gray-600">${timeLabel}</td>`;
+        html += `<tr><td>${timeLabel}</td>`;
         days.forEach((day) => {
             const visits = data[day]?.[interval] || 0;
             const intensity = maxVisits > 0 ? Math.min(Math.floor((visits / maxVisits) * 9), 9) : 0;
             const bgClass = visits > 0 ? `bg-blue-${(intensity + 1) * 100}` : "bg-gray-50";
-            html += `<td class="${bgClass}"></td>`;
+            html += `<td class="${bgClass}">${visits > 0 ? visits : ''}</td>`;
         });
         html += "</tr>";
     }
@@ -106,7 +108,7 @@ function renderHeatmap(data) {
     calendarDiv.innerHTML = html;
 }
 
-function analyzeWorkHours(data) {
+function analyzeActivityHours(data) {
     const workHours = {};
     const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     days.forEach((day) => {
