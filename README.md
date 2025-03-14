@@ -19,7 +19,7 @@
 1. **Clone or Download**:
     - Clone this repository or download the ZIP file and extract it.
    ```bash
-   git clone <repository-url>
+   git clone git@github.com:miguelms95/chrome-usage-tracker.git
    ```
 2. **Load in Chrome**:
     - Open Chrome and go to `chrome://extensions/`.
