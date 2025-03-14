@@ -1,6 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Chrome Usage Tracker",
+  "author": "miguelms.es",
   "version": "1.0",
   "permissions": [
     "history"
